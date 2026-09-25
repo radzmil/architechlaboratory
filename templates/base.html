@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Architech Systems | Enterprise AI Automation{% endblock %}</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #050505; overflow-x: hidden; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .ai-text-gradient {
+            background: linear-gradient(to right, #3b82f6, #8b5cf6, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .ai-mesh-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .glass-panel {
+            background: rgba(15, 15, 17, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s ease;
+        }
+        .glass-panel:hover {
+            border-color: rgba(99, 102, 241, 0.4);
+            box-shadow: 0 10px 40px -10px rgba(99, 102, 241, 0.15);
+            transform: translateY(-4px);
+        }
+
+        .prompt-glow {
+            box-shadow: 0 0 30px -10px rgba(99, 102, 241, 0.2);
+            transition: all 0.3s ease;
+        }
+        .prompt-glow:hover {
+            box-shadow: 0 0 40px -5px rgba(99, 102, 241, 0.4);
+            border-color: rgba(99, 102, 241, 0.5);
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 3px;
+            background-color: #8b5cf6;
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        .scroller {
+            overflow: hidden;
+            -webkit-mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+            mask: linear-gradient(90deg, transparent, white 10%, white 90%, transparent);
+        }
+        .scroller__inner {
+            padding-block: 1rem;
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1.5rem;
+            width: max-content;
+            animation: scroll 60s linear infinite;
+        }
+        .scroller__inner:hover {
+            animation-play-state: paused;
+        }
+        .scroller__inner[data-direction="right"] {
+            animation-direction: reverse;
+        }
+        @keyframes scroll {
+            to {
+                transform: translate(calc(-50% - 0.75rem));
+            }
+        }
+    </style>
+</head>
+<body class="text-zinc-300 antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+
+    <div class="ai-mesh-bg"></div>
+
+    <!-- BAR ATAS -->
+    <div class="hidden md:flex justify-between items-center px-8 py-2 border-b border-zinc-800/80 bg-[#020202] text-[10px] uppercase tracking-widest font-mono text-zinc-500">
+        <div data-ms="[SSM: 003893898-X] // RAKAN_TEKNOLOGI_KORPORAT" data-en="[SSM: 003893898-X] // CORPORATE_TECH_PARTNER"></div>
+        <div class="flex items-center space-x-2">
+            <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+            <span data-ms="NOD_AUTOMASI_PERUSAHAAN : DALAM_TALIAN" data-en="ENTERPRISE_AUTOMATION_NODE : ONLINE">[cite: 9]</span>
+        </div>
+    </div>
+
+    <!-- BAR NAVIGASI UTAMA -->
+    <nav class="sticky top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-zinc-800/80">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <a href="/" class="flex items-center space-x-3">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Architech Systems Logo" class="h-14 w-auto object-contain">
+                </a>
+                <div class="flex flex-col justify-center">
+                    <span class="text-zinc-400 text-xs font-mono tracking-wider font-semibold">003893898-X</span>
+                </div>
+            </div>
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium text-zinc-400">
+                <a href="/" class="hover:text-white transition" data-ms="Utama" data-en="Home">Home</a>
+                <a href="/solutions" class="hover:text-white transition" data-ms="Penyelesaian" data-en="Solutions">Solutions</a>
+                <a href="/about" class="hover:text-white transition" data-ms="Organisasi" data-en="Organization">Organization</a>
+                <a href="/pricing" class="hover:text-white transition" data-ms="Produk & Langganan" data-en="Products & Subs">Products & Subs</a>
+                <a href="/policy" class="hover:text-white transition" data-ms="Dasar" data-en="Policy">Policy</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <button id="lang-toggle" class="flex items-center space-x-1.5 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700/80 rounded-full px-3 py-1.5 transition-all text-xs font-mono">
+                    <span id="lang-ms" class="text-zinc-500">MS</span>
+                    <span class="text-zinc-600">|</span>
+                    <span id="lang-en" class="text-white font-bold">EN</span>
+                </button>
+                <a href="https://wa.me/" class="group text-xs font-mono font-bold bg-zinc-100 text-zinc-900 px-5 py-2.5 rounded-md hover:bg-white transition-all flex items-center hidden sm:flex">
+                    <span class="relative flex h-2 w-2 mr-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                    </span>
+                    <span data-ms="Sembang Langsung" data-en="Live Chat">Live Chat</span> 
+                    <i class="fa-brands fa-whatsapp ml-2 text-emerald-600 text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- KANDUNGAN UTAMA HALAMAN -->
+    {% block content %}{% endblock %}
+
+    <!-- FOOTER -->
+    <footer class="bg-[#020202] border-t border-zinc-800/80 pt-16 pb-8 px-6 text-sm relative z-10">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
+            <div class="md:col-span-2">
+                <div class="font-bold text-white text-lg mb-4 flex items-center space-x-3">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Architech Systems Logo" class="h-8 w-auto object-contain">
+                    <span>ARCHITECH SYSTEMS</span>
+                </div>
+                <p class="text-zinc-500 max-w-sm mb-6 leading-relaxed text-xs" data-ms="Entiti kejuruteraan perisian berdaftar (003893898-X), memfokuskan kepada kualiti seni bina sistem, kestabilan awan, dan kebolehskalaan automasi perniagaan." data-en="A verified software engineering entity (003893898-X), focusing on system architecture quality, cloud stability, and business automation scalability.">[cite: 9]</p>
+                <div class="text-indigo-400 font-mono text-[10px] tracking-widest border border-indigo-500/30 inline-block px-3 py-1 rounded bg-indigo-500/10">SSM: 202603255098 (003893898-X)</div>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 uppercase text-[10px] tracking-wider font-mono text-zinc-400" data-ms="Pautan Pantas" data-en="Quick Links">[cite: 9]</h4>
+                <ul class="space-y-2 text-zinc-500 text-xs">
+                    <li><a href="/solutions" class="hover:text-indigo-400 transition" data-ms="Penyelesaian Sistem" data-en="System Solutions">[cite: 9]</a></li>
+                    <li><a href="/pricing" class="hover:text-indigo-400 transition" data-ms="Produk & Langganan" data-en="Products & Subs">[cite: 9]</a></li>
+                    <li><a href="/policy" class="hover:text-indigo-400 transition" data-ms="Dasar & Syarat" data-en="Policy & Terms">[cite: 9]</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-semibold mb-4 uppercase text-[10px] tracking-wider font-mono text-zinc-400" data-ms="Protokol Sistem" data-en="System Protocols">[cite: 9]</h4>
+                <ul class="space-y-2 text-zinc-500 text-xs">
+                    <li data-ms="Alamat: Laman Niaga, Ampang Waterfront, 68000 Ampang, Selangor" data-en="Address: Laman Niaga, Ampang Waterfront, 68000 Ampang, Selangor">[cite: 9]</li>
+                    <li data-ms="Operasi Korporat B2B" data-en="B2B Corporate Operations">[cite: 9]</li>
+                    <li data-ms="Sokongan Teknikal Tahap 1" data-en="Tier 1 Technical Support">[cite: 9]</li>
+                </ul>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto border-t border-zinc-800/80 pt-8 flex flex-col md:flex-row justify-between items-center text-[10px] font-mono text-zinc-600">
+            <div data-ms="[LOG_SISTEM] &copy; 2026 Architech Systems. Hak Cipta Terpelihara." data-en="[SYS_LOG] &copy; 2026 Architech Systems. All Rights Reserved.">[cite: 9]</div>
+            <div class="mt-2 md:mt-0 space-x-4">
+                <a href="/policy" class="hover:text-zinc-400" data-ms="Dasar Privasi" data-en="Privacy Policy">[cite: 9]</a>
+                <a href="/policy" class="hover:text-zinc-400" data-ms="Terma Perkhidmatan" data-en="Terms of Service">[cite: 9]</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Skrip Dwi-Bahasa Global (Menyimpan Memori Bahasa) -->
+    <script>
+        let currentLang = localStorage.getItem('architech_lang') || 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('architech_lang', lang);
+
+            if(lang === 'ms') {
+                document.getElementById('lang-ms').classList.add('text-white', 'font-bold');
+                document.getElementById('lang-ms').classList.remove('text-zinc-500');
+                document.getElementById('lang-en').classList.remove('text-white', 'font-bold');
+                document.getElementById('lang-en').classList.add('text-zinc-500');
+            } else {
+                document.getElementById('lang-en').classList.add('text-white', 'font-bold');
+                document.getElementById('lang-en').classList.remove('text-zinc-500');
+                document.getElementById('lang-ms').classList.remove('text-white', 'font-bold');
+                document.getElementById('lang-ms').classList.add('text-zinc-500');
+            }
+            const elements = document.querySelectorAll('[data-ms]');
+            elements.forEach(el => {
+                if (el.tagName === 'INPUT' && el.type === 'text') {
+                    el.placeholder = el.getAttribute(`data-${lang}`);
+                } else {
+                    el.innerHTML = el.getAttribute(`data-${lang}`);
+                }
+            });
+        }
+
+        document.getElementById('lang-toggle').addEventListener('click', () => {
+            setLanguage(currentLang === 'ms' ? 'en' : 'ms');
+        });
+
+        window.onload = () => { 
+            setLanguage(currentLang); 
+        };
+    </script>
+</body>
+</html>
