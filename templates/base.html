@@ -102,12 +102,12 @@
 
     <!-- BAR NAVIGASI UTAMA -->
     <nav class="sticky top-0 w-full z-50 bg-[#050505]/90 backdrop-blur-md border-b border-zinc-800/80">
-        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 min-h-20 flex items-center justify-between gap-3">
             <div class="flex items-center space-x-3">
                 <a href="/" class="flex items-center space-x-3">
-                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Architech Systems Logo" class="h-14 w-auto object-contain">
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Architech Systems Logo" class="h-12 sm:h-14 w-auto object-contain">
                 </a>
-                <div class="flex flex-col justify-center">
+                <div class="hidden sm:flex flex-col justify-center">
                     <span class="text-zinc-400 text-xs font-mono tracking-wider font-semibold">003893898-X</span>
                 </div>
             </div>
@@ -117,8 +117,9 @@
                 <a href="/about" class="hover:text-white transition" data-ms="Organisasi" data-en="Organization">Organization</a>
                 <a href="/pricing" class="hover:text-white transition" data-ms="Produk & Langganan" data-en="Products & Subs">Products & Subs</a>
                 <a href="/policy" class="hover:text-white transition" data-ms="Dasar" data-en="Policy">Policy</a>
+                <a href="/contact" class="hover:text-white transition" data-ms="Hubungi" data-en="Contact">Contact</a>
             </div>
-            <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-2 sm:space-x-4">
                 <button id="lang-toggle" class="flex items-center space-x-1.5 bg-zinc-800/50 hover:bg-zinc-800 border border-zinc-700/80 rounded-full px-3 py-1.5 transition-all text-xs font-mono">
                     <span id="lang-ms" class="text-zinc-500">MS</span>
                     <span class="text-zinc-600">|</span>
@@ -132,6 +133,19 @@
                     <span data-ms="Sembang Langsung" data-en="Live Chat">Live Chat</span> 
                     <i class="fa-brands fa-whatsapp ml-2 text-emerald-600 text-sm"></i>
                 </a>
+                <button id="mobile-menu-toggle" type="button" class="lg:hidden w-10 h-10 inline-flex items-center justify-center rounded-md border border-zinc-700/80 bg-zinc-800/50 text-zinc-200 hover:bg-zinc-800 transition" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation menu">
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-base"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-zinc-800/80 bg-[#050505]">
+            <div class="max-w-7xl mx-auto px-4 py-3 grid gap-1">
+                <a href="/" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Utama" data-en="Home">Home</a>
+                <a href="/solutions" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Penyelesaian" data-en="Solutions">Solutions</a>
+                <a href="/about" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Organisasi" data-en="Organization">Organization</a>
+                <a href="/pricing" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Produk & Langganan" data-en="Products & Subs">Products & Subs</a>
+                <a href="/policy" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Dasar" data-en="Policy">Policy</a>
+                <a href="/contact" class="mobile-nav-link rounded-md px-4 py-3 text-sm font-medium text-zinc-300 hover:bg-zinc-800 hover:text-white transition" data-ms="Hubungi" data-en="Contact">Contact</a>
             </div>
         </div>
     </nav>
@@ -197,7 +211,7 @@
             }
             const elements = document.querySelectorAll('[data-ms]');
             elements.forEach(el => {
-                if (el.tagName === 'INPUT' && el.type === 'text') {
+                if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
                     el.placeholder = el.getAttribute(`data-${lang}`);
                 } else {
                     el.innerHTML = el.getAttribute(`data-${lang}`);
@@ -207,6 +221,28 @@
 
         document.getElementById('lang-toggle').addEventListener('click', () => {
             setLanguage(currentLang === 'ms' ? 'en' : 'ms');
+        });
+
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+
+        mobileMenuToggle.addEventListener('click', () => {
+            const isOpen = mobileMenuToggle.getAttribute('aria-expanded') === 'true';
+            mobileMenuToggle.setAttribute('aria-expanded', String(!isOpen));
+            mobileMenuToggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+            mobileMenu.classList.toggle('hidden', isOpen);
+            mobileMenuIcon.classList.toggle('fa-bars', isOpen);
+            mobileMenuIcon.classList.toggle('fa-xmark', !isOpen);
+        });
+
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenuToggle.setAttribute('aria-expanded', 'false');
+                mobileMenuIcon.classList.add('fa-bars');
+                mobileMenuIcon.classList.remove('fa-xmark');
+            });
         });
 
         window.onload = () => { 
